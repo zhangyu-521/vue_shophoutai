@@ -1,29 +1,43 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-
+import Login from '../components/Login.vue'
+import Home from '../components/Home.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  // 路由重定向，访问斜线时就到login组件
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path:'/',
+    redirect:'/login'
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path:'/login',
+    component:Login
+  },
+  {
+    path:'/home',
+    component:Home
   }
+  
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  
+})
+// 挂载路由导航守卫
+router.beforeEach((to,from,next)=>{
+  // to将要访问的路径
+  // from代表从哪个路径来
+  // next()放行 next(路径)强制跳转
+
+  if(to.path === '/login') return next()
+  const tokenStr = sessionStorage.getItem('token')
+  if(!tokenStr) return next('/login')
+  next()
+
 })
 
 export default router
