@@ -6,13 +6,13 @@
         <img src="../assets/logo.png" alt="" />
       </div>
       <!-- 登录表单区域 -->
-      <!-- 用户名 -->
+     
       <el-form ref="loginFormRef" :rules="loginFormRules" :model="loginForm" label-width="0px" class="login_form">
+         <!-- 用户名 -->
         <el-form-item prop="username">
           <el-input  v-model="loginForm.username" prefix-icon="el-icon-user-solid"></el-input>
         </el-form-item>
          <!-- 密码 -->
-      
          <el-form-item prop="password">
           <el-input   type="password" v-model="loginForm.password" prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
@@ -62,6 +62,7 @@ export default {
 
     },
     login(){
+      // validate是校验
       this.$refs.loginFormRef.validate( async valid=>{
         if(!valid) return;
        const {data:res} = await this.$http.post('login',this.loginForm)
